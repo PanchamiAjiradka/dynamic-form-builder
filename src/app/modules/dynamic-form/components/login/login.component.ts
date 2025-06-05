@@ -1,5 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { login } from "src/app/shared/store/auth/auth.actions";
@@ -19,7 +18,6 @@ export class LoginComponent {
   password = "";
   role: "admin" | "user" = "user";
   error$ = this.store.select(selectError);
-  @ViewChild("loginForm") loginFormRef!: NgForm;
 
   constructor(private store: Store, private router: Router) {
     this.store.select(selectIsAuthenticated).subscribe((isAuth) => {
@@ -30,13 +28,6 @@ export class LoginComponent {
   }
 
   onLogin() {
-    if (this.loginFormRef.invalid) {
-      // Mark all controls as touched to trigger validation messages
-      Object.values(this.loginFormRef.controls).forEach((control) => {
-        control.markAsTouched();
-      });
-      return;
-    }
     localStorage.clear();
     this.store.dispatch(
       login({

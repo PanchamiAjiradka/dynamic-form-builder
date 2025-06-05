@@ -1,33 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; width: 100%;}
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-*{
-    box-sizing: border-box;
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+* {
+  box-sizing: border-box;
 }
 
-.container{
-    height: 100%;
-    width: 100%;
-    padding: 12px;
+.container {
+  height: 100%;
+  width: 100%;
+  padding: 12px;
 }
 
-.v-flex{
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.v-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.center-center{
-    align-items: center;
-    justify-content: center;
+.center-center {
+  align-items: center;
+  justify-content: center;
 }
 
-.button{
-    width: fit-content;
+.button {
+  width: fit-content;
 }
 
-// MATERIAL FORM FIELDS
-.mat-mdc-form-field{
-    width: 100%;
+.mat-mdc-form-field {
+  width: 100%;
 }
