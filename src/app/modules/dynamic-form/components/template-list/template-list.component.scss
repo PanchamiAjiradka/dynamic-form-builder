@@ -1,0 +1,50 @@
+.template-list-container {
+  padding: 2rem;
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  .empty-state {
+    color: gray;
+    font-style: italic;
+  }
+
+  .template-card {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    display: block;
+    background: var(--mat-stepper-line-color);
+    border-radius: 15px;
+    width: fit-content;
+
+    mat-card-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .mat-mdc-card-title,
+    .mat-mdc-card-subtitle {
+      padding: 0 16px !important;
+      font-style: oblique;
+    }
+  }
+}
+
+.template-list-header {
+  color: #3f50b5;
+  margin-bottom: 3rem !important;
+}
+
+.template-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.template-card {
+  flex: 1 1 300px;
+  max-width: 320px;
+  box-sizing: border-box;
+}

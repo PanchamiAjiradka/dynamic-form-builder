@@ -1,0 +1,34 @@
+<div class="scrollable-wrapper">
+  <div
+    class="header-actions"
+    [ngClass]="allowTemplateCreation ? 'header-action' : 'header-actions'"
+  >
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="createNewTemplate()"
+      *ngIf="allowTemplateCreation"
+    >
+      Create a New Form Template
+    </button>
+    <button mat-raised-button color="primary" (click)="onLogout()">
+      Logout
+    </button>
+  </div>
+
+  <!-- Form builder section -->
+  <div *ngIf="isCreatingTemplate">
+    <app-form-builder
+      (onCancel)="cancelTemplateCreation()"
+      (onSave)="saveTemplate($event)"
+    ></app-form-builder>
+  </div>
+
+  <!-- No data template
+  <ng-template #noData>
+    <div class="no-data">
+      <h2>No data to display. Click on "New" button to create one!</h2>
+    </div>
+  </ng-template> -->
+  <app-template-list></app-template-list>
+</div>

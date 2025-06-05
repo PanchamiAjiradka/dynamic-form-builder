@@ -1,0 +1,132 @@
+<form
+  #dynamicForm="ngForm"
+  (ngSubmit)="onSubmit(dynamicForm)"
+  class="preview-container"
+>
+  <mat-card class="preview-card">
+    <mat-card-title class="preview-card-title">
+      {{ template.name.toUpperCase() }}
+    </mat-card-title>
+    <mat-card-content>
+      <div *ngFor="let field of template.fields" class="form-group">
+        <label class="form-label">
+          {{ field.label }} <span *ngIf="field.required">*</span>
+          <small *ngIf="field.helpText"> - {{ field.helpText }}</small>
+        </label>
+
+        <ng-container [ngSwitch]="field.type">
+          <!-- Text Input -->
+          <mat-form-field
+            *ngSwitchCase="'text'"
+            appearance="outline"
+            class="full-width"
+          >
+            <input
+              matInput
+              [(ngModel)]="formData[field.id]"
+              name="{{ field.id }}"
+              [required]="field.required"
+              [placeholder]="field.label"
+            />
+          </mat-form-field>
+
+          <!-- Textarea -->
+          <mat-form-field
+            *ngSwitchCase="'textarea'"
+            appearance="outline"
+            class="full-width"
+          >
+            <textarea
+              matInput
+              [(ngModel)]="formData[field.id]"
+              name="{{ field.id }}"
+              [required]="field.required"
+              [placeholder]="field.label"
+            ></textarea>
+          </mat-form-field>
+
+          <!-- Dropdown -->
+          <mat-form-field
+            *ngSwitchCase="'dropdown'"
+            appearance="outline"
+            class="full-width"
+          >
+            <mat-select
+              [(ngModel)]="formData[field.id]"
+              name="{{ field.id }}"
+              [required]="field.required"
+            >
+              <mat-option *ngFor="let opt of field.options" [value]="opt.value">
+                {{ opt.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Checkbox -->
+          <div *ngSwitchCase="'checkbox'" class="option-group">
+            <mat-checkbox
+              *ngFor="let opt of field.options"
+              [value]="opt.value"
+              [(ngModel)]="formData[field.id]"
+              name="{{ field.id }}_{{ opt.value }}"
+              [required]="field.required"
+            >
+              {{ opt.label }}
+            </mat-checkbox>
+          </div>
+
+          <!-- Radio -->
+          <mat-radio-group
+            *ngSwitchCase="'radio'"
+            [(ngModel)]="formData[field.id]"
+            name="{{ field.id }}"
+            [required]="field.required"
+            class="option-group"
+          >
+            <mat-radio-button
+              *ngFor="let opt of field.options"
+              [value]="opt.value"
+              class="block"
+            >
+              {{ opt.label }}
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <!-- Date Picker -->
+          <mat-form-field
+            *ngSwitchCase="'date'"
+            appearance="outline"
+            class="full-width"
+          >
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="formData[field.id]"
+              name="{{ field.id }}"
+              [required]="field.required"
+              appDateAutoFormat
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" (click)="cancel()">
+        Cancel
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+<!-- Submitted data preview -->
+<div *ngIf="submittedData" class="submitted-section">
+  <h3>Submitted Data</h3>
+  <pre>{{ submittedData | json }}</pre>
+</div>

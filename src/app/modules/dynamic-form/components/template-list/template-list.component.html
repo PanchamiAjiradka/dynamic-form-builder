@@ -1,0 +1,44 @@
+<div class="template-list-container">
+  <h2 class="template-list-header">Saved Form Templates</h2>
+
+  <div *ngIf="templates.length === 0" class="empty-state">
+    No templates available.
+  </div>
+
+  <div class="template-container">
+    <mat-card
+      *ngFor="let template of templates; let i = index"
+      class="template-card"
+    >
+      <mat-card-title>{{ template.name }}</mat-card-title>
+      <mat-card-content>
+        <p>Fields: {{ template.fields.length }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="editTemplate(i)"
+          *ngIf="allowTemplateDeleteEdit"
+        >
+          Edit
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="previewTemplate(template)"
+        >
+          Preview
+        </button>
+        <button
+          mat-button
+          color="warn"
+          (click)="deleteTemplate(i)"
+          *ngIf="allowTemplateDeleteEdit"
+        >
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

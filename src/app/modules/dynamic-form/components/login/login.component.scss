@@ -1,0 +1,138 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 25rem;
+  padding: 1rem;
+}
+
+.mat-mdc-card-title {
+  display: flex;
+  margin: 2.5rem;
+  margin-top: 0;
+  flex-direction: row;
+  justify-content: center;
+  color: #3f50b5;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.full-width-button {
+  background-color: #3f50b5 !important;
+  color: white !important;
+  height: 2.8125rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep {
+  .login-container {
+    .mat-mdc-form-field-infix {
+      width: 15.625rem !important;
+      min-height: unset !important;
+    }
+    .mat-mdc-select-value-text,
+    .mat-mdc-option .mdc-list-item__primary-text {
+      font-size: 0.875rem !important;
+    }
+
+    .mat-mdc-raised-button[disabled] {
+      opacity: 0.6;
+    }
+
+    .mat-mdc-select {
+      font-size: 0.875rem !important;
+    }
+
+    .mat-internal-form-field > label {
+      padding-left: 0.875rem !important;
+      color: #2e2e2e;
+    }
+
+    .mdc-text-field--outlined .mat-mdc-form-field-infix {
+      padding-top: 0.75rem !important;
+    }
+
+    .mat-mdc-form-field-error-wrapper {
+      padding: 0 !important;
+    }
+
+    .mat-internal-form-field > label {
+      margin-left: -0.9375rem !important;
+      font-size: 0.875rem;
+    }
+
+    .mdc-checkbox {
+      left: -0.625rem !important;
+    }
+
+    .mat-mdc-form-field-error {
+      color: red !important;
+      font-size: 0.875rem !important;
+    }
+
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+      top: 1.4rem !important;
+    }
+
+    .mdc-floating-label {
+      font-size: 0.875rem !important;
+    }
+
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-text-field__input {
+      font-size: 0.875rem !important;
+    }
+
+    .mat-accent.mat-mdc-radio-button {
+      --mdc-radio-selected-focus-icon-color: #3f50b5 !important;
+      --mdc-radio-selected-icon-color: #3f50b5 !important;
+      --mdc-radio-selected-pressed-icon-color: #3f50b5 !important;
+      --mat-radio-checked-ripple-color: #3f50b5 !important;
+      --mdc-radio-selected-hover-icon-color: #3f50b5;
+    }
+
+    .mat-datepicker-content {
+      background-color: white !important;
+      z-index: 1 !important;
+    }
+
+    .mat-mdc-form-field-icon-suffix {
+      margin-bottom: 0.5rem;
+    }
+
+    .mat-calendar-body-selected {
+      background-color: #3f50b5 !important;
+    }
+
+    .mat-calendar-body-today:not(.mat-calendar-body-selected):not(
+        .mat-calendar-body-comparison-identical
+      ) {
+      background-color: #3f50b5 !important;
+      border-color: #3f50b5 !important;
+    }
+
+    .mat-mdc-form-field-icon-prefix {
+      padding: 0 !important;
+    }
+
+    @media (max-width: 425px) {
+      .mat-mdc-text-field-wrapper {
+        width: 16rem !important;
+        min-width: 16rem !important;
+      }
+    }
+  }
+}

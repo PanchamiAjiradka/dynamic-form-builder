@@ -1,0 +1,77 @@
+<div class="login-container">
+  <div class="login-card mat-elevation-z4">
+    <h2 class="mat-mdc-card-title">LOGIN</h2>
+
+    <form
+      #loginForm="ngForm"
+      (ngSubmit)="onLogin()"
+      novalidate
+      class="login-form"
+    >
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          name="email"
+          type="email"
+          [(ngModel)]="email"
+          required
+          email
+          #emailCtrl="ngModel"
+        />
+        <mat-error *ngIf="emailCtrl.invalid && emailCtrl.touched">
+          <span *ngIf="emailCtrl.errors?.['required']">Email is required.</span>
+          <span *ngIf="emailCtrl.errors?.['email']"
+            >Invalid email address.</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          name="password"
+          type="password"
+          [(ngModel)]="password"
+          required
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$"
+          #passwordCtrl="ngModel"
+        />
+        <mat-error *ngIf="passwordCtrl.invalid && passwordCtrl.touched">
+          <span *ngIf="passwordCtrl.errors?.['required']"
+            >Password is required.</span
+          >
+          <span *ngIf="passwordCtrl.errors?.['pattern']">
+            Invalid Password
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Role -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select Role</mat-label>
+        <mat-select [(ngModel)]="role" name="role" required #roleCtrl="ngModel">
+          <mat-option value="admin">Admin</mat-option>
+          <mat-option value="user">User</mat-option>
+        </mat-select>
+        <mat-error *ngIf="roleCtrl.invalid && roleCtrl.touched">
+          Role is required.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="full-width full-width-button"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>

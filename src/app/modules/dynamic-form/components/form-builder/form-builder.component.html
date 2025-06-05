@@ -1,0 +1,282 @@
+<div class="form">
+  <div class="form-head">
+    <button mat-icon-button matTooltip="Back to List" (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2 class="form-header">
+      {{ templateName.toLocaleUpperCase() || "CREATE YOUR OWN FORM TEMPLATE" }}
+    </h2>
+  </div>
+  <div cdkDropListGroup class="form-builder" style="display: flex; gap: 1rem">
+    <div class="available-fields" cdkDropList #sourceList="cdkDropList" style="flex: 1">
+      <h3>Available Fields</h3>
+      <div
+        class="field-item"
+        *ngFor="let item of availableFields"
+        cdkDrag
+        [cdkDragData]="item"
+      >
+        {{ item.label }}
+      </div>
+    </div>
+
+    <!-- TARGET: Form Canvas -->
+    <div
+      class="canvas"
+      cdkDropList
+      [cdkDropListConnectedTo]="[sourceList]"
+      (cdkDropListDropped)="onDrop($event)"
+      style="
+        flex: 2;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        min-height: 300px;
+        overflow-y: auto;
+      "
+    >
+      <h3>Form Canvas</h3>
+
+      <ng-container *ngFor="let field of formFields">
+        <div
+          class="form-element"
+          (click)="selectField(field)"
+          [style.border]="
+            selectedField?.id === field.id ? '2px solid blue' : '1px solid #ddd'
+          "
+          style="
+            position: relative;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+          "
+        >
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="deleteField(field); $event.stopPropagation()"
+            style="position: absolute; top: -0.4rem; right: 0.25rem"
+            matTooltip="Delete Field"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <label class="form-element-label" style="font-weight: 600">
+            {{ field.label }}
+            <span *ngIf="field.required" style="color: red">*</span>
+          </label>
+
+          <ng-container [ngSwitch]="field.type">
+            <!-- Text Field -->
+            <mat-form-field
+              *ngSwitchCase="'text'"
+              appearance="outline"
+              class="full-width"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <input
+                matInput
+                [placeholder]="field.label"
+                [required]="field.required"
+                [attr.minLength]="field.validations?.minLength"
+                [attr.maxLength]="field.validations?.maxLength"
+              />
+            </mat-form-field>
+
+            <!-- Textarea -->
+            <mat-form-field
+              *ngSwitchCase="'textarea'"
+              appearance="outline"
+              class="full-width"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <textarea
+                matInput
+                [placeholder]="field.label"
+                [required]="field.required"
+                [attr.minLength]="field.validations?.minLength"
+                [attr.maxLength]="field.validations?.maxLength"
+              ></textarea>
+            </mat-form-field>
+
+            <!-- Dropdown -->
+            <mat-form-field
+              *ngSwitchCase="'dropdown'"
+              appearance="outline"
+              class="full-width"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let opt of field.options" [value]="opt.value">
+                  {{ opt.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Checkbox -->
+            <div *ngSwitchCase="'checkbox'">
+              <mat-checkbox
+                *ngFor="let opt of field.options"
+                [value]="opt.value"
+                style="display: block"
+              >
+                {{ opt.label }}
+              </mat-checkbox>
+            </div>
+
+            <!-- Radio -->
+            <mat-radio-group *ngSwitchCase="'radio'" [name]="field.id">
+              <mat-radio-button *ngFor="let opt of field.options" [value]="opt.value">
+                {{ opt.label }}
+              </mat-radio-button>
+            </mat-radio-group>
+
+            <!-- Date Picker -->
+            <mat-form-field
+              *ngSwitchCase="'date'"
+              appearance="outline"
+              class="full-width"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                appDateAutoFormat
+                [min]="field.validations?.minDate"
+                [max]="field.validations?.maxDate"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </ng-container>
+
+          <div
+            *ngIf="field.helpText"
+            style="font-size: 12px; color: gray; margin-top: 0.2rem"
+          >
+            {{ field.helpText }}
+          </div>
+        </div>
+      </ng-container>
+
+      <div
+        *ngIf="formFields.length === 0"
+        class="placeholder"
+        style="color: #888; font-style: italic; margin-bottom: 10px"
+      >
+        Drag fields here to build your form
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="formFields.length === 0"
+        (click)="saveTemplate()"
+      >
+        Save Template
+      </button>
+    </div>
+
+    <!-- CONFIG PANEL -->
+    <div
+      *ngIf="selectedField"
+      style="flex: 0.5; width: 400px; border: 1px solid #ccc; padding: 1rem"
+    >
+      <h3>Configure Field</h3>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Label</mat-label>
+        <input matInput [(ngModel)]="selectedField.label" />
+      </mat-form-field>
+
+      <mat-checkbox [(ngModel)]="selectedField.required">Required</mat-checkbox>
+
+      <mat-form-field appearance="outline" class="full-width" style="margin-top: 1rem">
+        <mat-label>Help Text</mat-label>
+        <input matInput [(ngModel)]="selectedField.helpText" />
+      </mat-form-field>
+
+      <!-- Prevent errors: only show these if validations exist -->
+      <ng-container *ngIf="selectedField.validations">
+        <!-- Min Length -->
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          style="margin-top: 1rem"
+          *ngIf="
+            !selectedField.type.includes('radio') &&
+            !selectedField.type.includes('dropdown') &&
+            !selectedField.type.includes('checkbox') &&
+            !selectedField.type.includes('date')
+          "
+        >
+          <mat-label>Min Length</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="selectedField.validations.minLength"
+          />
+        </mat-form-field>
+
+        <!-- Max Length -->
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          *ngIf="
+            !selectedField.type.includes('radio') &&
+            !selectedField.type.includes('dropdown') &&
+            !selectedField.type.includes('checkbox') &&
+            !selectedField.type.includes('date')
+          "
+        >
+          <mat-label>Max Length</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="selectedField.validations.maxLength"
+          />
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          *ngIf="selectedField.type === 'date'"
+        >
+          <mat-label>Min Date</mat-label>
+          <input matInput type="date" [(ngModel)]="selectedField.validations.minDate" />
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          *ngIf="selectedField.type === 'date'"
+        >
+          <mat-label>Max Date</mat-label>
+          <input matInput type="date" [(ngModel)]="selectedField.validations.maxDate" />
+        </mat-form-field>
+      </ng-container>
+
+      <!-- Options editor -->
+      <div *ngIf="selectedField.options" style="margin-top: 1rem">
+        <h4>Options</h4>
+        <div
+          *ngFor="let option of selectedField.options; let i = index"
+          style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem"
+        >
+          <mat-form-field appearance="outline" style="flex: 1">
+            <mat-label>Option Label</mat-label>
+            <input matInput [(ngModel)]="selectedField.options[i].label" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="flex: 1">
+            <mat-label>Option Value</mat-label>
+            <input matInput [(ngModel)]="selectedField.options[i].value" />
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" (click)="removeOption(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <button mat-button color="primary" (click)="addOption()">Add Option</button>
+      </div>
+    </div>
+  </div>
+</div>
