@@ -8,6 +8,11 @@ This is a full-featured **Form Builder** application built using Angular and Ang
 
 👉 [https://dynamic-form-builder-okgw.vercel.app/login]
 
+> ℹ️ Basic login validations are applied:
+> - Password must be at least 8 characters
+> - Must include uppercase, lowercase, number, and special character
+> - Role-based login (`admin` / `user`)
+
 ---
 
 ## ✨ Features
