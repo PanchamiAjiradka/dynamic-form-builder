@@ -56,7 +56,8 @@ Two user roles implemented:
 
 Includes:
 - Login screen with role selection (`admin` or `user`)
-- Role-based routing and access control
+- Password must contain atleast 8 characters, with atleast one uppercase, lowercase and special characters.
+- Role-based routing and access control.
 
 ---
 
